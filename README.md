@@ -229,27 +229,7 @@ classDiagram
 
 ```
 
-## Sequence Diagram
-```mermaid
-equenceDiagram
-    actor User
-    participant Frontend
-    participant OrderController
-    participant OrderService
-    participant OrderRepository
-    participant Database
 
-    User->>Frontend: Open order page / submit request
-    Frontend->>OrderController: HTTP request to /api/orders
-    OrderController->>OrderService: getAll() / get(id) / save(orderDTO) / update(id, orderDTO) / delete(id)
-    OrderService->>OrderRepository: findAll() / findById(id) / save(order) / save(entity) / deleteById(id)
-    OrderRepository->>Database: SQL query / insert / update / delete
-    Database-->>OrderRepository: Entity data / confirmation
-    OrderRepository-->>OrderService: Order entity / list
-    OrderService-->>OrderController: OrderDTO / status
-    OrderController-->>Frontend: JSON response / HTTP status
-
-```
 
 ## Spring Security Details
 This app uses Spring Security with HTTP Basic authentication and an in-memory user store.
