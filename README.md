@@ -158,7 +158,15 @@ If the frontend runs on another host or port, update the CORS allowed origins in
 - Data is reset when the backend restarts.
 - Swagger is enabled and secured by the same Spring Security rules.
 
-
+## ERD
+```mermaid
+erDiagram
+    ORDERS {
+        bigint order_id PK
+        varchar_255 order_name
+        double price
+    }
+```
 
 ## Spring Security Details
 This app uses Spring Security with HTTP Basic authentication and an in-memory user store.
