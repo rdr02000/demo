@@ -167,6 +167,57 @@ erDiagram
         double price
     }
 ```
+## Class Diagram
+```mermaid
+classDiagram
+    class Order {
+        -Long orderId
+        -String orderName
+        -Double price
+        +Order()
+        +Order(String orderName, Double price)
+        +getOrderId() Long
+        +setOrderId(Long orderId) void
+        +getOrderName() String
+        +setOrderName(String orderName) void
+        +getPrice() Double
+        +setPrice(Double price) void
+    }
+
+    class JpaRepository~Order, Long~ {
+        <<interface>>
+        +save(entity) S
+        +findAll() List~S~
+        +findById(id) Optional~S~
+        +deleteById(id) void
+    }
+
+    class OrderRepository {
+        <<interface>>
+    }
+
+    class OrderService {
+        -OrderRepository orderRepository
+        +OrderService(OrderRepository orderRepository)
+        +createOrder(String name, Double price) Order
+        +getAllOrders() List~Order~
+        +getOrderById(Long id) Optional~Order~
+    }
+
+    class OrderController {
+        -OrderService orderService
+        +OrderController(OrderService orderService)
+        +createOrder(String name, Double price) ResponseEntity~Order~
+        +getAllOrders() ResponseEntity~List~Order~~
+    }
+
+    %% Relationships
+    JpaRepository <|-- OrderRepository : extends
+    OrderRepository ..> Order : manages
+    OrderService --> OrderRepository : injects
+    OrderController --> OrderService : injects
+
+```
 
 ## Spring Security Details
 This app uses Spring Security with HTTP Basic authentication and an in-memory user store.
