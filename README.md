@@ -229,6 +229,7 @@ classDiagram
 
 ```
 
+## Sequence Diagram
 ```mermaid
 sequenceDiagram
     actor User
