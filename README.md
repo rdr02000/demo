@@ -162,60 +162,70 @@ If the frontend runs on another host or port, update the CORS allowed origins in
 ```mermaid
 erDiagram
     ORDERS {
-        bigint order_id PK
-        varchar_255 order_name
-        double price
+        BIGINT order_id PK
+        VARCHAR order_name "NOT NULL"
+        DOUBLE price "NOT NULL"
     }
 ```
 ## Class Diagram
 ```mermaid
 classDiagram
-    class Order {
-        -Long orderId
-        -String orderName
-        -Double price
-        +Order()
-        +Order(String orderName, Double price)
-        +getOrderId() Long
-        +setOrderId(Long orderId) void
-        +getOrderName() String
-        +setOrderName(String orderName) void
-        +getPrice() Double
-        +setPrice(Double price) void
+    class OrderController {
+        - OrderService orderService
+        + OrderController(OrderService orderService)
+        + List~OrderDTO~ getAllOrders()
+        + ResponseEntity~OrderDTO~ getOrderById(Long id)
+        + ResponseEntity~Void~ createOrder(OrderDTO orderDTO)
+        + ResponseEntity~OrderDTO~ updateOrder(Long id, OrderDTO orderDTO)
+        + ResponseEntity~Void~ deleteOrder(Long id)
     }
 
-    class JpaRepository~Order, Long~ {
+    class OrderService {
+        - OrderRepository orderRepository
+        + OrderService(OrderRepository orderRepository)
+        + void save(OrderDTO orderDTO)
+        + List~OrderDTO~ getAll()
+        + OrderDTO get(Long id)
+        + OrderDTO update(Long id, OrderDTO orderDTO)
+        + void delete(Long id)
+    }
+
+    class OrderServiceInterface {
         <<interface>>
-        +save(entity) S
-        +findAll() List~S~
-        +findById(id) Optional~S~
-        +deleteById(id) void
+        + void save(OrderDTO demoDTO)
+        + List~OrderDTO~ getAll()
+        + OrderDTO get(Long id)
+        + OrderDTO update(Long id, OrderDTO demoDTO)
+        + void delete(Long id)
     }
 
     class OrderRepository {
         <<interface>>
+        + JpaRepository~Order, Long~
     }
 
-    class OrderService {
-        -OrderRepository orderRepository
-        +OrderService(OrderRepository orderRepository)
-        +createOrder(String name, Double price) Order
-        +getAllOrders() List~Order~
-        +getOrderById(Long id) Optional~Order~
+    class Order {
+        - Long id
+        - String name
+        - Double price
+        + getters/setters
     }
 
-    class OrderController {
-        -OrderService orderService
-        +OrderController(OrderService orderService)
-        +createOrder(String name, Double price) ResponseEntity~Order~
-        +getAllOrders() ResponseEntity~List~Order~~
+    class OrderDTO {
+        - Long id
+        - String name
+        - Double price
+        + OrderDTO()
+        + OrderDTO(String name, Double price)
+        + OrderDTO(Long id, String name, Double price)
     }
 
-    %% Relationships
-    JpaRepository <|-- OrderRepository : extends
-    OrderRepository ..> Order : manages
-    OrderService --> OrderRepository : injects
-    OrderController --> OrderService : injects
+    OrderController --> OrderService
+    OrderService ..|> OrderServiceInterface
+    OrderService --> OrderRepository
+    OrderRepository --> Order
+    OrderController --> OrderDTO
+    OrderService --> OrderDTO
 
 ```
 
