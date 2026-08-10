@@ -237,17 +237,17 @@ The security setup is in SecurityConfig.java.
 
 It does these things:
 
-enables web security
-disables CSRF for the REST API
-enables CORS
-allows public access to Swagger and H2 endpoints
-requires authentication for everything else
-uses HTTP Basic auth
-creates a default in-memory user
-Default user
-From the same config:
+- enables web security
+- disables CSRF for the REST API
+- enables CORS
+- allows public access to Swagger and H2 endpoints
+- requires authentication for everything else
+- uses HTTP Basic auth
+- creates a default in-memory user
+- Default user
+- From the same config:
 
-username: admin
-password: admin123
-This user is created with an in-memory UserDetailsManager.
+- username: admin
+- password: admin123
+- This user is created with an in-memory UserDetailsManager.
 
